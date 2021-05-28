@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+<div class="row" style="padding:0px 7px 0 7px;">
+    <div class="col-md-12 movie-item-out">
+        
+        <h3 style="padding-left:10px;border-left:8px solid #00A6DE;">全部结果：</h3>
+    </div>
+    
+{%  if res %}
+
+    {%  for p in res %}
+    <div class="col-md-2 col-sm-6 col-xs-6 movie-item-out">
+    <div class="movie-item">
+        <a style="position:relative;display:block;" title="" target="_blank" href="/detail/{{p.id}}/">
+            <img class="indexhot"  src="/{{p.MenuImg}}">
+            <button class="hdtag"><b style="font-size: 14px">￥{{p.MenuFree}}</b></button>
+        </a>
+        <div class="meta">
+            <div style="width:100%;overflow:hidden;height:20px;">
+                <a target="_blank"  class="movie-name" href="/detail/{{p.id}}/">{{p.MenuName}}</a>
+            </div>
+            <em> <span style="color: #0095bb">{{p.MenuCore}}</span>&nbsp;分&nbsp;&nbsp;|&nbsp;&nbsp;月销量：<strong><span style="color:#FF0000;">{{p.MenuShell}}</span></strong></em>
+        </div>
+    </div>
+    </div>
+    {%  endfor %}
+ 
+ {% else %}
+ <br>
+ <br>   
+<h1> 无相关结果！</h1>
+
+ {% endif %}
+    
+
+
+<div class="col-md-12 movie-item-out">
+<div>
+</div>
+</div>
+</div>
+
+
+</div>
+
+
+{%  endblock %}

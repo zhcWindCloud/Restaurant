@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>菜单系统推荐</title>
+    {#    <meta charset="UTF-8" /> <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>#}
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/favicon.ico">
+
+    {#    <link rel="stylesheet" type="text/css" href="/static/css/lrtk.css"/>#}
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    {#    <script src="/static/js/jquery.min.js"></script>#}
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    {#    <link rel="stylesheet" rev="stylesheet" type="text/css" media="all" href="/static/css/bootadd.css">#}
+    <link rel="stylesheet" rev="stylesheet" type="text/css" media="all" href="/static/css/css2.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+{#    <script src="/css/html5shiv.min.js"></script>#}
+{#    <script src="/css/respond.min.js"></script>#}
+    <![endif]-->
+
+    {#    <script type="text/javascript" src="/static/js/jquery.js"></script>#}
+    <div class="Upper"></div>
+
+    <!--     <script type="text/javascript">$.AutomLeafStart({leafsfolder:"/static/images/",howmanyimgsare:8,initialleafs:10,maxYposition:-10,multiplyclick:true,multiplynumber:2,infinite:true,fallingsequence:4000}); 落叶效果
+        </script> -->
+</head>
+<body>
+<div style="background:#FFF">
+    <div style="padding:5px 0;border-bottom:1px solid #DDD;">
+        <div class="container">
+            <span class="header-help">欢迎来到菜单推荐系统！</span>
+            <div class="pull-right">
+                {% if user.is_authenticated %}
+                    <span class="header-help">用户：<a href="javascript:;"
+                                                    style="font-size: 18px;text-decoration: none">{{ user.username }}</a></span>
+                    &nbsp; &nbsp; &nbsp;<span><a href="{% url 'Myrestaurant:user_logout' %}">注销</a></span>
+                {% else %}
+                    <span class="header-help"><a style="font-size: 18px" href="{% url 'Myrestaurant:login' %}">LOGIN</a></span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="container" style="padding-top:15px;padding-bottom:15px;padding-right:0;">
+        <div class="pull-left">
+            <span style="font-size: 26px;color: #31b0d5;font-family: 华文彩云;font-style: normal">菜单推荐</span>
+        </div>
+        <div class="pull-right ">
+            <div class="row">
+                <form class="navbar-form" target="_blank" accept-charset="utf-8" action="/search/" method="get"
+                      role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="wd" placeholder="菜名搜索">
+                    </div>
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                    {% if user.is_authenticated %}
+                        <a href="javascript:void (0);" class="btn btn-danger" onclick="mune()">已点菜单</a>
+                    {% else %}
+                        <a href="javascript:void (0);" class="btn btn-danger" onclick="mune1()">已点菜单</a>
+
+                    {% endif %}
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse  navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav ">
+                    <li class="active"><a href="/">首页</a></li>
+                    {% for c in pls %}
+                        <li class=""><a href="/type/{{ c.id }}">{{ c.MenuType }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="pull-right">
+                    <ul class="nav navbar-nav">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+{% block content %} {% endblock %}
+
+
+
+<footer class="footer">
+    <p style="margin: 0 0 10px;"><br/>&copy; 2020 菜单推荐系统 版权所有</p>
+    <em><a href="/">返回首页 </a></em>
+</footer>
+
+<script src="/static/layui/layui.all.js"></script>
+
+<script type="text/javascript">
+    {#console.log(String(window.location))#}
+    $(document).ready(function () {
+        $("ul li a").each(function () {
+            $this = $(this);
+            {#console.log($this[0].href)#}
+            if ($this[0].href == String(window.location)) {
+                $this.parent().addClass("active");
+                $this.parent().siblings().removeClass('active');
+                {#$this.parent().prev().removeClass("active");#}
+
+            }
+        });
+    });
+
+    function mune() {
+        layer.open({
+                type: 2,
+                title: "已下的订单",
+                area: ['450px', '440px'],
+                shade: 0.8,
+                closeBtn: 1,
+                shadeClose: true,
+                content: '{% url "Myrestaurant:ORDER" %}'
+
+
+            }
+        )
+    }
+    function mune1() {
+layer.msg("您还未登录！",{icon:5})
+    }
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+

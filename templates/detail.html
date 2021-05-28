@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <style>
+
+
+        .comments {
+            margin: auto 0;
+            max-width: 95%;
+            /*padding: 0 1.25rem;*/
+        }
+
+        .comment-wrap {
+            margin-bottom: 1.25rem;
+            display: table;
+            width: 100%;
+            min-height: 5.3125rem;
+        }
+
+        .photo {
+            padding-top: 0.625rem;
+            display: table-cell;
+            width: 3.5rem;
+        }
+
+        .photo .avatar {
+            height: 2.25rem;
+            width: 2.25rem;
+            border-radius: 50%;
+            background-size: contain;
+        }
+
+        .comment-block {
+            padding: 1rem;
+            background-color: #fff;
+            display: table-cell;
+            vertical-align: top;
+            border-radius: 0.1875rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-block textarea {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .comment-text {
+            margin-bottom: 1.25rem;
+        }
+
+        .bottom-comment {
+            color: #acb4c2;
+            font-size: 0.875rem;
+        }
+
+        .comment-date {
+            float: left;
+        }
+
+        .comment-actions {
+            float: right;
+        }
+
+        .comment-actions li {
+            display: inline;
+        }
+
+        .comment-actions li.complain {
+            padding-right: 0.625rem;
+            border-right: 1px solid #e1e5eb;
+        }
+
+        .comment-actions li.reply {
+            padding-left: 0.625rem;
+        }
+
+    </style>
+    <div class="container">
+
+        <div class="container-fluid" style="background:#FFF;padding-top:15px;">
+            <ol class="breadcrumb">
+                <li><a href="/">首页</a></li>
+                <li>菜单详情</li>
+                <li class="active">{{ p.MenuName }}</li>
+            </ol>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h1 class="movie-title">{{ p.MenuName }}</h1>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-4" style="padding-right:5px;">
+                            <a href="#" style="display:block;position:relative;">
+                                <img class="img-thumbnail" width="100%" src="/{{ p.MenuImg }}">
+                                <!-- <button class="hdtag"></button> -->
+                            </a>
+                            <div class="online-button">
+
+                            </div>
+                            <div style="clear:both;"></div>
+                            <div style="margin:10px auto;">
+
+                            </div>
+                        </div>
+                        <div class="col-md-8" style="padding-right:5px;">
+                            <table class="table table-striped table-condensed table-bordered"
+                                   style="margin-bottom:10px;font-size:12px;">
+                                <tbody>
+                                <tr>
+                                    <td class="span2"><span class="info-label">名称</span></td>
+                                    <td id="munename">{{ p.MenuName }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="span2"><span class="info-label">类型</span></td>
+                                    <td id="casts" style="position:relative;">{{ p.MenuType.MenuType }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="span2"><span class="info-label">评分</span></td>
+                                    <td id="casts" style="position:relative;">{{ p.MenuCore }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="span2"><span class="info-label">价格</span></td>
+                                    <td id="free">  {{ p.MenuFree }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="span2"><span class="info-label">月销量</span></td>
+                                    <td>  {{ p.MenuShell }} </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div style="text-align: right">
+                                {% if user.is_authenticated %}
+                                    <a style="font-size: 12px;text-decoration: none;"
+                                       class="btn btn-primary" href="javascript:void (0);" onclick="shop()">下单
+                                    </a>
+                                {% else %}
+                                    <a style="font-size: 12px;text-decoration: none;"
+                                       class="btn btn-primary" href="javascript:void (0);" onclick="login()">下单
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:10px;">
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row" style="padding:0px 7px 0 7px;">
+
+                    <div class="col-md-12 movie-item-out">
+                        <br>
+                        <h3 style="padding-left:10px;border-left:8px solid #00A6DE;">相似推荐：</h3>
+                    </div>
+                    {% for p in res %}
+                        <div class="col-md-2 col-sm-6 col-xs-6 movie-item-out">
+                            <div class="movie-item">
+                                <a style="position:relative;display:block;" target="_blank" href="/detail/{{ p.id }}/">
+                                    <img class="indexhot" src="/{{ p.MenuImg }}">
+                                    <button class="hdtag"><b style="font-size: 14px">￥{{ p.MenuFree }}</b></button>
+                                </a>
+                                <div class="meta">
+                                    <div style="width:100%;overflow:hidden;height:20px;">
+                                        <a target="_blank" class="movie-name"
+                                           href="/detail/{{ p.id }}/">{{ p.MenuName }}</a>
+                                    </div>
+                                    <em> <span style="color: #0095bb">{{ p.MenuCore }}</span>&nbsp;分&nbsp;&nbsp;|&nbsp;&nbsp;月销量：<strong><span
+                                            style="color:#FF0000;">{{ p.MenuShell }}</span></strong></em>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                    <div class="col-md-12 movie-item-out">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% if user.is_authenticated %}
+
+
+                    <div class="row" style="padding:0px 7px 0 7px;">
+
+                        <div class="col-md-12 movie-item-out">
+
+                            <h3 style="padding-left:10px;border-left:8px solid #00A6DE;">猜你喜欢：</h3>
+                        </div>
+                        {% for p in object_list %}
+                            <div class="col-md-2 col-sm-6 col-xs-6 movie-item-out">
+                                <div class="movie-item">
+                                    <a style="position:relative;display:block;" target="_blank"
+                                       href="/detail/{{ p.id }}/">
+                                        <img class="indexhot" src="/{{ p.MenuImg }}">
+                                        <button class="hdtag"><b style="font-size: 14px">￥{{ p.MenuFree }}</b></button>
+                                    </a>
+                                    <div class="meta">
+                                        <div style="width:100%;overflow:hidden;height:20px;">
+                                            <a target="_blank" class="movie-name"
+                                               href="/detail/{{ p.id }}/">{{ p.MenuName }}</a>
+                                        </div>
+                                        <em> <span style="color: #0095bb">{{p.MenuCore }}</span>&nbsp;分&nbsp;&nbsp;|&nbsp;&nbsp;月销量：<strong><span
+                                                style="color:#FF0000;">{{ p.MenuShell }}</span></strong></em>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="col-md-12 movie-item-out">
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+    <script src="/static/layui/layui.all.js"></script>
+
+    <script type="text/javascript">
+        function login() {
+            layer.msg("还未登陆，即将跳转登陆界面！")
+            setTimeout(function () {
+                window.location.href =
+                {% url 'Myrestaurant:login' %}
+            }, 2000)
+        }
+
+        function shop() {
+            layer.confirm('您确定下单吗？', {
+                btn: ['确定', '取消'] //按钮
+                , title: "下单信息"
+                , success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);//少了这个是不能从父页面向子页面传值的
+                    //获取子页面的元素，进行数据渲染
+                    body.contents().find('#free').val();
+
+                },
+                yes: function () {
+                    var value = document.getElementById("free").innerHTML
+                    var munename = document.getElementById("munename").innerHTML
+                    console.log(value, '{{request.user}}', munename)
+                    $.ajax({
+                        url: '{% url 'Myrestaurant:mymune' %}',
+                        dataType: "json",
+                        type: "POST",
+                        data: {'user': '{{request.user}}', 'munename': munename},
+                        success: function (e) {
+                            if (e == "1") {
+                                layer.msg("下单成功", {icon: 1})
+                            } else {
+                                layer.msg("下单失败", {icon: 2})
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+{% endblock %}
